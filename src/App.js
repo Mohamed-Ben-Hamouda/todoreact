@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { cleanup } from '@testing-library/react';
+import { v4 as uuidv4 } from 'uuid'
 
 
 class ToDo extends Component {
@@ -19,21 +19,21 @@ class ToDo extends Component {
   addOrganism = () => {
 
     this.setState({
-      organism: this.state.organism.concat({ val: this.state.text, para: false }), text: ""
+      organism: this.state.organism.concat({ id: uuidv4(), val: this.state.text, para: false }), text: ""
 
     })
   }
-  linethrough = (val) => {
+  linethrough = (id) => {
     this.setState({
       organism: this.state.organism.map(el =>
         //si val equal el.val alors lobjet qui quontient val et suprimer les crocher e(...)t et inverser le valeur de para 
-        el.val === val ? { ...el, para: !el.para } : el)
+        el.id === id ? { ...el, para: !el.para } : el)
     })
 
   }
-  remouve = (val) => {
+  remouve = (id) => {
     this.setState({
-      organism: this.state.organism.filter(el => val != el.val)
+      organism: this.state.organism.filter(el => id !== el.id)
     })
   }
   // addInterface = () => {
@@ -66,8 +66,8 @@ class ToDo extends Component {
           {this.state.organism.map(el =>
             <div className="btnr">
 
-              <button type="button" onClick={() => this.linethrough(el.val)} className="btn btn-info">{el.para ? 'undo' : 'complete'}</button>
-              <button type="button" onClick={() => this.remouve(el.val)} className="btn btn-info">Delete</button>
+              <button type="button" onClick={() => this.linethrough(el.id)} className="btn btn-info">{el.para ? 'undo' : 'complete'}</button>
+              <button type="button" onClick={() => this.remouve(el.id)} className="btn btn-info">Delete</button>
               <h2 className={el.para ? "coucou" : ""} > {el.val}</h2>
             </div>
 
